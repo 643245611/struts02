@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="result" namespace="/" extends="struts-default" >
+	<!--  转发 来转向页面，通常处理JSP  !-->
+		<action name="Demo1Action" class="cn.itheima.a_result.Demo1Action" method="execute" >
+			<result name="success" type="dispatcher" >/hello.jsp</result>
+		</action>
+	<!-- 重定向 redirect类型是重定向到指定的视图资源。重定向将会丢失所有的参数、值栈和请求属性，即同时失去了Action的处理结果-->
+		<action name="Demo2Action" class="cn.itheima.a_result.Demo2Action" method="execute" >
+			<result name="success" type="redirect" >/hello.jsp</result>
+		</action>
+	<!-- 转发到Action 
+	chain类型
+  Struts2框架支持配置多个Action组成一个链或者工作流来处理用户的请求，而Action链的实现，是通过拦截器ChainingInterceptor完成的。ChainingInterceptor在源执行完毕后，将源Action的用户请求参数、值栈、session的数据赋值给目的Action，也就是说，
+在执行多个Action过程中，参数都是保留的。Struts2框架并不推荐开发者使用这种Action链式的结果类型，该框架推荐使用redirect-action类型
+！-->
+		<action name="Demo3Action" class="cn.itheima.a_result.Demo3Action" method="execute" >
+			 <result name="success" type="chain">
+			 		<!-- action的名字 -->
+	             <param name="actionName">Demo1Action</param>
+	             	<!-- action所在的命名空间 -->
+	             <param name="namespace">/</param>
+	         </result>
+		</action>
+		<!-- 重定向到Action   客户端重定向到Action，本质上就是客户端发送第二次请求 -->
+		<action name="Demo4Action" class="cn.itheima.a_result.Demo4Action" method="execute" >
+			<result  name="success"  type="redirectAction">
+				 <!-- action的名字 -->
+	             <param name="actionName">Demo1Action</param>
+	             <!-- action所在的命名空间 -->
+	             <param name="namespace">/</param>
+            </result>
+		</action>
+	</package>
+	<include file="cn/itheima/b_api/struts.xml"></include>
+	<include file="cn/itheima/c_param/struts.xml"></include>
+</struts>
